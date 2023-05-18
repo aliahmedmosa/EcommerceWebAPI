@@ -1,6 +1,7 @@
 ﻿using APP.Api.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,12 @@ namespace APP.Api.Controllers
     {
         private readonly IUnitOfWork uOW;
 
-        public CategoriesController(IUnitOfWork uOW)
+        public IMapper mapper { get; }
+
+        public CategoriesController(IUnitOfWork uOW, IMapper mapper)
         {
             this.uOW = uOW;
+            this.mapper = mapper;
         }
 
 
@@ -27,19 +31,35 @@ namespace APP.Api.Controllers
                 var allCategories = await uOW.CategoryRepository.GetAllAsync();
                 if (allCategories is not null)
                 {
+                    /*
+                     * 1- Documentation for auto mapper
+                        1-install AutoMapper.Extensions.Microsoft.DependencyInjection for api.
+                        2-configure auto mapper ....
+                            a- Create new folder EX:- MappingProfiles  ....In it create new class file Ex:- MappingCategory that inherit from Profile to cofigure mapping in constructor ....... "For every Entity"
+                            b- Configure in program.cs
+                            c- Inject auto maper in controller constructor
+                            d- Implement auto mapper code in Controller
+                     */
+                    //implementaion for auto mapping
+                    var response= mapper.Map<IReadOnlyList<Category>,IReadOnlyList<ListingCategoryDto>>(allCategories);
+                    return Ok(response);
+
+
 
                     /*
-                      * add custom shape for return data ...
+                      *2-add custom shape for return data ...
                         ----------------------manual Mapping
                      */
-                    var res = allCategories.Select(x => new CategoryDto
-                    {
-                        Name = x.Name,
-                        Description = x.Description
-                    }).ToList();
-                    return Ok(res);
-                }
+                    //var res = allCategories.Select(x => new CategoryDto
+                    //{
+                    //    Name = x.Name,
+                    //    Description = x.Description
+                    //}).ToList();
+                    //return Ok(res);
 
+
+
+                }
                 return BadRequest("Not Found");
             }
             catch (Exception ex)
@@ -56,11 +76,11 @@ namespace APP.Api.Controllers
         {
             try
             {
+                var category = await uOW.CategoryRepository.GetAsync(id);
+
                 /*
                  * ----------------manual Mapping
                  * ---- To get custom data by DTO
-                 
-                        var category = await uOW.CategoryRepository.GetAsync(id);
                         if (category == null)
                             return BadRequest($"Not Found This Id[{id}]");
 
@@ -75,11 +95,21 @@ namespace APP.Api.Controllers
 
 
                 // ---- To get pure data as the entity ......
-
-                var category = await uOW.CategoryRepository.GetAsync(id);
+                /*
                 if (category == null)
                     return BadRequest($"Not Found This Id[{id}]");
                 return Ok(category);
+                */
+
+                //implementaion for auto mapping
+                if (category is not null)
+                {
+                    var response = mapper.Map<Category, ListingCategoryDto>(category);
+                    return Ok(response);
+                }
+                return BadRequest($"Not Found This Id[{id}]");
+
+
             }
             catch (Exception ex)
             {
@@ -116,8 +146,6 @@ namespace APP.Api.Controllers
 
 
         }
-
-
 
 
         [HttpPut("Update-Category-by-id")]

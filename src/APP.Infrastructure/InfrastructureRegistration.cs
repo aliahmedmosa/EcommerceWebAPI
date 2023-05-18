@@ -17,12 +17,14 @@ namespace APP.Infrastructure
         public static IServiceCollection InfrastructureConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //----------------------when not using Unit of work
+            //----------------------When not using Unit of work
             //services.AddScoped<ICategoryRepository, CategoryRepository>();
             //services.AddScoped<IProductRepository, ProductRepository>();
 
-            //----------------------when using Unit of work
+            //---------------------When using Unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //---------------------------------------------------------------Configure DB
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

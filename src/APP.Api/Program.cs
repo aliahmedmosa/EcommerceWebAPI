@@ -1,4 +1,6 @@
 using APP.Infrastructure;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,8 +9,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//for DataBase
+
+//-----------------------------------------------------DataBase configuration
 builder.Services.InfrastructureConfiguration(builder.Configuration);
+
+//-----------------------------------------------------auto mapper configuration
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 
 var app = builder.Build();
 
