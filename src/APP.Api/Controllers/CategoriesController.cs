@@ -11,6 +11,19 @@ namespace APP.Api.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
+
+        //--------------------------------------------------------------------------------------------- AUTOMAPPER DOCUMENTATION ------------------------------------------------------------------------IMPORTANT
+        /*
+                     * 1- Documentation for auto mapper
+                        1-install AutoMapper.Extensions.Microsoft.DependencyInjection for api.
+                        2-configure auto mapper ....
+                            a- Create new folder EX:- MappingProfiles  ....In it create new class file Ex:- MappingCategory that inherit from Profile to cofigure mapping in constructor ....... "For every Entity"
+                            b- Configure in program.cs
+                            c- Inject auto maper in controller constructor
+                            d- Implement auto mapper code in Controller
+         */
+
+
         private readonly IUnitOfWork uOW;
 
         public IMapper mapper { get; }
@@ -21,7 +34,7 @@ namespace APP.Api.Controllers
             this.mapper = mapper;
         }
 
-
+        
 
         [HttpGet("Get-All-Categories")]
         public async Task<ActionResult> Get()
@@ -32,30 +45,32 @@ namespace APP.Api.Controllers
                 if (allCategories is not null)
                 {
                     /*
-                     * 1- Documentation for auto mapper
-                        1-install AutoMapper.Extensions.Microsoft.DependencyInjection for api.
-                        2-configure auto mapper ....
-                            a- Create new folder EX:- MappingProfiles  ....In it create new class file Ex:- MappingCategory that inherit from Profile to cofigure mapping in constructor ....... "For every Entity"
-                            b- Configure in program.cs
-                            c- Inject auto maper in controller constructor
-                            d- Implement auto mapper code in Controller
-                     */
-                    //implementaion for auto mapping
-                    var response= mapper.Map<IReadOnlyList<Category>,IReadOnlyList<ListingCategoryDto>>(allCategories);
+                    * 1- implementaion for Get List Of Items with auto mapper
+                    */
+
+                    //Start implementaion
+
+                    var response = mapper.Map<IReadOnlyList<Category>, IReadOnlyList<ListingCategoryDto>>(allCategories);
                     return Ok(response);
 
+                    //End implementaion
 
 
                     /*
                       *2-add custom shape for return data ...
                         ----------------------manual Mapping
                      */
+
+                    //Start implementaion
+
                     //var res = allCategories.Select(x => new CategoryDto
                     //{
                     //    Name = x.Name,
                     //    Description = x.Description
                     //}).ToList();
                     //return Ok(res);
+
+                    //End implementaion
 
 
 
@@ -81,27 +96,41 @@ namespace APP.Api.Controllers
                 /*
                  * ----------------manual Mapping
                  * ---- To get custom data by DTO
-                        if (category == null)
-                            return BadRequest($"Not Found This Id[{id}]");
+                */
 
-                        var result = new CategoryDto
-                        {
-                            Name=category.Name,
-                            Description=category.Description
-                        };
-                        return Ok(result);
-                 *
-                 */
+                //Start implementaion
+
+                //if (category == null)
+                //    return BadRequest($"Not Found This Id[{id}]");
+
+                //var result = new CategoryDto
+                //{
+                //    Name=category.Name,
+                //    Description=category.Description
+                //};
+                //return Ok(result);
+
+                //End implementaion
 
 
                 // ---- To get pure data as the entity ......
+
+
+                //Start implementaion
+
+                //if (category == null)
+                //    return BadRequest($"Not Found This Id[{id}]");
+                //return Ok(category);
+
+                //End implementaion
+
+
                 /*
-                if (category == null)
-                    return BadRequest($"Not Found This Id[{id}]");
-                return Ok(category);
+                 * implementaion for Get Item with auto mapper
                 */
 
-                //implementaion for auto mapping
+                //Start implementaion
+
                 if (category is not null)
                 {
                     var response = mapper.Map<Category, ListingCategoryDto>(category);
@@ -109,6 +138,7 @@ namespace APP.Api.Controllers
                 }
                 return BadRequest($"Not Found This Id[{id}]");
 
+                //End implementaion
 
             }
             catch (Exception ex)
@@ -128,13 +158,32 @@ namespace APP.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var newCategory = new Category
-                    {
-                        Name = categoryDto.Name,
-                        Description = categoryDto.Description
-                    };
-                    await uOW.CategoryRepository.AddAsync(newCategory);
+                    /*
+                    * adding without auto mapper
+                    */
+
+                    //Start implementaion
+
+                    //var newCategory = new Category
+                    //{
+                    //    Name = categoryDto.Name,
+                    //    Description = categoryDto.Description
+                    //};
+                    //await uOW.CategoryRepository.AddAsync(newCategory);
+
+                    //End implementaion
+
+                    /*
+                    * implementaion for adding with auto mapper
+                    */
+
+                    //Start implementaion
+
+                    var response = mapper.Map<Category>(categoryDto);
+                    await uOW.CategoryRepository.AddAsync(response);
                     return Ok(categoryDto);
+
+                    //End implementaion
                 }
                 return BadRequest(categoryDto);
             }
@@ -149,21 +198,41 @@ namespace APP.Api.Controllers
 
 
         [HttpPut("Update-Category-by-id")]
-        public async Task<ActionResult> Put(int id, CategoryDto categoryDto)
+        public async Task<ActionResult> Put(UpdateCategoryDto updateCategoryDto)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var exitingCategory = await uOW.CategoryRepository.GetAsync(id);
+                    var exitingCategory = await uOW.CategoryRepository.GetAsync(updateCategoryDto.Id);
                     if (exitingCategory is not null)
                     {
-                        exitingCategory.Name = categoryDto.Name;
-                        exitingCategory.Description = categoryDto.Description;
-                        await uOW.CategoryRepository.UpdateAsync(id, exitingCategory);
-                        return Ok(categoryDto);
+                        /*
+                        * updating without auto mapper
+                        */
+                        //Start implementaion
+
+                        //exitingCategory.Name = updateCategoryDto.Name;
+                        //exitingCategory.Description = updateCategoryDto.Description;
+                        //await uOW.CategoryRepository.UpdateAsync(updateCategoryDto.Id, exitingCategory);
+                        //return Ok(updateCategoryDto);
+
+                        //End implementaion
+
+                        /*
+                        * implementaion for updating with auto mapper
+                        */
+
+                        //Start implementaion
+
+                        mapper.Map(updateCategoryDto, exitingCategory);
+                        await uOW.CategoryRepository.UpdateAsync(updateCategoryDto.Id, exitingCategory);
+                        return Ok(updateCategoryDto);
+
+                        //End implementaion
+
                     }
-                    return BadRequest($"Category Not found , ID : [{id}] Incorrect");
+                    return BadRequest($"Category Not found , ID : [{updateCategoryDto.Id}] Incorrect");
                 }
                 return BadRequest("Data not valied");
             }

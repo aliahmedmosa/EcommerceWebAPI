@@ -13,4 +13,8 @@ namespace APP.Api.Dtos
     {
         public int Id { get; set; }
     }
+    public class UpdateCategoryDto : CategoryDto
+    {
+        public int Id { get; set; }
+    }
 }

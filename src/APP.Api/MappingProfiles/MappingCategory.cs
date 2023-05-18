@@ -15,6 +15,7 @@ namespace APP.Api.MappingProfiles
             //Does not matter where is the source or the distenation ReverseMap() will solve this issue .....
             CreateMap<CategoryDto,Category>().ReverseMap();
             CreateMap<ListingCategoryDto,Category>().ReverseMap();
+            CreateMap<UpdateCategoryDto, Category>().ReverseMap();
         }
     }
 }
