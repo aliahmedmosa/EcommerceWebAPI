@@ -1,4 +1,5 @@
-﻿using APP.Core.Interfaces;
+﻿using APP.Core.Entities;
+using APP.Core.Interfaces;
 using APP.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace APP.Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly ApplicationDbContext context;
 
@@ -54,14 +55,14 @@ namespace APP.Infrastructure.Repositories
 
         public async Task<T> GetAsync(int id, params Expression<Func<T, object>>[] includes)
         {
-            var query = context.Set<T>().AsQueryable();
+            IQueryable<T> query = context.Set<T>().Where(x=>x.Id==id);
 
             //Apply includes
             foreach (var item in includes)
             {
                 query = query.Include(item);
             }
-            return await((DbSet<T>)query).FindAsync(id);
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task UpdateAsync(int id, T entity)

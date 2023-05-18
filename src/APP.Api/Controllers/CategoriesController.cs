@@ -50,7 +50,8 @@ namespace APP.Api.Controllers
 
                     //Start implementaion
 
-                    var response = mapper.Map<IReadOnlyList<Category>, IReadOnlyList<ListingCategoryDto>>(allCategories);
+                    //var response = mapper.Map<IReadOnlyList<Category>, IReadOnlyList<ListingCategoryDto>>(allCategories);
+                    var response = mapper.Map<List<ListingCategoryDto>>(allCategories);
                     return Ok(response);
 
                     //End implementaion
