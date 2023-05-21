@@ -4,6 +4,7 @@ using APP.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace APP.Infrastructure
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             return services;
         }

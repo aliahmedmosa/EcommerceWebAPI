@@ -31,7 +31,8 @@ namespace APP.Infrastructure.Repositories
         // overload add async to upload image 
         public async Task<bool> AddAsync(CreateProductDto dto)
         {
-            if(dto.Image is not null)
+            var src = "";
+            if (dto.Image is not null)
             {
                 /*
                 * To upload Image
@@ -44,7 +45,7 @@ namespace APP.Infrastructure.Repositories
                 {
                     Directory.CreateDirectory("wwwroot"+root);
                 }
-                var src = root + productImageName;
+                src = root + productImageName;
                 var picInfo = fileProvider.GetFileInfo(src);
                 var rootPath = picInfo.PhysicalPath;
                 using (var fileStream = new FileStream(rootPath, FileMode.Create))
@@ -54,12 +55,65 @@ namespace APP.Infrastructure.Repositories
 
                 //End Implementation 
 
-                //Create new product with uploaded Image ----------
+            }
+            //Create new product with uploaded Image ----------
+            var response = mapper.Map<Product>(dto);
+            response.ProductPicture = src;
+            await context.Products.AddAsync(response);
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+
+
+        public async Task<bool> UpdateAsync(UpdateProductDto dto)
+        {
+            var currentProduct = await context.Products.FindAsync(dto.Id);
+            if (currentProduct != null) 
+            {
+                var src = "";
+                if (dto.Image is not null)
+                {
+                    /*
+                    * To upload Image
+                    */
+
+                    //Start Implementation 
+                    var root = "/images/products/";
+                    var productImageName = $"{Guid.NewGuid()}" + dto.Image.FileName;
+                    if (!Directory.Exists("wwwroot" + root))
+                    {
+                        Directory.CreateDirectory("wwwroot" + root);
+                    }
+                    src = root + productImageName;
+                    var picInfo = fileProvider.GetFileInfo(src);
+                    var rootPath = picInfo.PhysicalPath;
+                    using (var fileStream = new FileStream(rootPath, FileMode.Create))
+                    {
+                        await dto.Image.CopyToAsync(fileStream);
+                    }
+
+                    //End Implementation 
+                }
+
+
+                //Remove old Picture
+                if (!string.IsNullOrEmpty(currentProduct.ProductPicture))
+                {
+                    var picInfo = fileProvider.GetFileInfo(currentProduct.ProductPicture);
+                    var rootPath = picInfo.PhysicalPath;
+                    System.IO.File.Delete(rootPath);
+                }
+
+
+                //update Product
                 var response = mapper.Map<Product>(dto);
                 response.ProductPicture = src;
-                await context.Products.AddAsync(response);
+                context.Products.Update(response);
                 await context.SaveChangesAsync();
 
+                
                 return true;
             }
             return false;

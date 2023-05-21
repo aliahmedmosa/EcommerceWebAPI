@@ -27,5 +27,12 @@ namespace APP.Core.Dtos
         public int CategoryId { get; set; }
         public IFormFile Image { get; set; }
     }
-    
+    public class UpdateProductDto : BaseProduct
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string OldImage { get; set; }
+        public IFormFile Image { get; set; }
+    }
+
 }

@@ -94,7 +94,24 @@ namespace APP.Api.Controllers
             
         }
 
+        [HttpPut("Update-Eciting-Product")]
+        public async Task<ActionResult> Put([FromForm] UpdateProductDto productDto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await uOW.ProductRepository.UpdateAsync(productDto);
+                    return result ? Ok(productDto) : BadRequest(productDto);
+                }
+                return BadRequest(productDto);
+            }
+            catch (Exception ex)
+            {
 
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

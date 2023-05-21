@@ -13,5 +13,6 @@ namespace APP.Core.Interfaces
         //Here you will write special implementation for Product for future
 
         Task<bool> AddAsync(CreateProductDto dto);
+        Task<bool> UpdateAsync(UpdateProductDto dto);
     }
 }

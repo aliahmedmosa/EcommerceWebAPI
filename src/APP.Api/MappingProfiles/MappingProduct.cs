@@ -17,6 +17,7 @@ namespace APP.Api.MappingProfiles
                 .ForMember(d=>d.ProductPicture,o=>o.MapFrom<ProductUrlResolver>())   //to get Product Picture
                 .ReverseMap();
             CreateMap<CreateProductDto, Product>().ReverseMap();
+            CreateMap<UpdateProductDto, Product>().ReverseMap();
             
         }
     }
