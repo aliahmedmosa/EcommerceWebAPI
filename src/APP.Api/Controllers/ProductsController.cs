@@ -114,5 +114,28 @@ namespace APP.Api.Controllers
         }
 
 
+
+        [HttpDelete("Delete-Product-By-Id")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                var exitingProduct = await uOW.ProductRepository.GetAsync(id);
+                if (exitingProduct is not null)
+                {
+                    await uOW.ProductRepository.DeleteAsync(id);
+                    return Ok($"this Product [{exitingProduct.Name}] is successfully deleted ...");
+                }
+                return BadRequest($"Product Not found , ID : [{id}] Incorrect");
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
     }
 }
