@@ -1,4 +1,4 @@
-﻿using APP.Api.Dtos;
+﻿using APP.Core.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
 using AutoMapper;
@@ -72,7 +72,27 @@ namespace APP.Api.Controllers
 
         }
 
+        [HttpPost("Add-New-Product")]
+        public async Task<ActionResult> post([FromForm]CreateProductDto productDto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //var response = mapper.Map<Product>(productDto);
 
+                    var result =  await uOW.ProductRepository.AddAsync(productDto);
+                    return result? Ok(productDto) : BadRequest(productDto);
+                }
+                return BadRequest(productDto);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            
+        }
 
 
 

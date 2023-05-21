@@ -1,4 +1,4 @@
-﻿using APP.Api.Dtos;
+﻿using APP.Core.Dtos;
 using APP.Core.Entities;
 using AutoMapper;
 
@@ -9,7 +9,6 @@ namespace APP.Api.MappingProfiles
         //Configuration for auto mapper .................
         public MappingCategory()
         {
-
             //CreateMap<source,distenation>().ReverseMap();
             //CreateMap<distenation,source>().ReverseMap();
             //Does not matter where is the source or the distenation ReverseMap() will solve this issue .....

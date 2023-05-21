@@ -1,4 +1,4 @@
-﻿using APP.Api.Dtos;
+﻿using APP.Core.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
 using AutoMapper;
@@ -21,7 +21,7 @@ namespace APP.Api.Controllers
                             b- Configure in program.cs
                             c- Inject auto maper in controller constructor
                             d- Implement auto mapper code in Controller
-         */
+        */
 
 
         private readonly IUnitOfWork uOW;
@@ -213,10 +213,12 @@ namespace APP.Api.Controllers
                         */
                         //Start implementaion
 
+
                         //exitingCategory.Name = updateCategoryDto.Name;
                         //exitingCategory.Description = updateCategoryDto.Description;
                         //await uOW.CategoryRepository.UpdateAsync(updateCategoryDto.Id, exitingCategory);
                         //return Ok(updateCategoryDto);
+
 
                         //End implementaion
 
