@@ -1,4 +1,5 @@
-﻿using APP.Infrastructure.Data;
+﻿using APP.Api.Errors;
+using APP.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace APP.Api.Controllers
             var product = context.Products.Find(50);
             if(product is null)
             {
-                return NotFound();
+                return NotFound(new BaseCommonResponse(404));
             }
             return Ok(product);
         }
@@ -49,7 +50,7 @@ namespace APP.Api.Controllers
         [HttpGet("bad-request")]
         public ActionResult GetBadRequest()
         {
-            return BadRequest();
+            return BadRequest(new BaseCommonResponse(400));
         }
 
 
