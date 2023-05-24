@@ -9,10 +9,13 @@ namespace APP.Api.Controllers
     public class ErrorsController : ControllerBase
     {
         //-------------------------------------------------------  Not forget errors middleware
+        //built in middleware 
         /*
          * app.UseStatusCodePagesWithReExecute("/ControlerName/{0}");
          * app.UseStatusCodePagesWithReExecute("/errors/{0}");
         */
+        //custom middleware for error with exceptions ..................... Excption middleware
+
         [HttpGet("Error")]
         public IActionResult Error(int statusCode)
         {

@@ -1,3 +1,4 @@
+using APP.Api.Middleware;
 using APP.Infrastructure;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -32,8 +33,14 @@ if (app.Environment.IsDevelopment())
 }
 
 
-//------------------------------------------------------Errors  Middleware 
+//------------------------------------------------------Start Errors  Middlewares 
+
+// 1- ..........................    My custom middleware
+app.UseMiddleware<ExceptionMiddleware>();
+// 2- ..........................  The builtin middleware
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
+//--------------------------------------------------------End Errors  Middlewares 
 
 
 app.UseHttpsRedirection();
