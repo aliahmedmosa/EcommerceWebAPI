@@ -6,6 +6,7 @@ namespace APP.Api.Controllers
 {
     [Route("errors/{statusCode}")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi =true)]
     public class ErrorsController : ControllerBase
     {
         //-------------------------------------------------------  Not forget errors middleware

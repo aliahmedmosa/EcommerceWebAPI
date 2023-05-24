@@ -18,7 +18,7 @@ namespace APP.Api.Controllers
                         1-install AutoMapper.Extensions.Microsoft.DependencyInjection for api.
                         2-configure auto mapper ....
                             a- Create new folder EX:- MappingProfiles  ....In it create new class file Ex:- MappingCategory that inherit from Profile to cofigure mapping in constructor ....... "For every Entity"
-                            b- Configure in program.cs
+                            b- Configure in ApiRegestration.cs in Extensions and configue it in program.cs
                             c- Inject auto maper in controller constructor
                             d- Implement auto mapper code in Controller
         */

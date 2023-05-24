@@ -9,6 +9,16 @@ namespace APP.Api.Controllers
     [ApiController]
     public class BugsController : ControllerBase
     {
+
+
+        //-------------------------------------------------------  Not forget errors middleware
+        //built in middleware 
+        /*
+         * app.UseStatusCodePagesWithReExecute("/ControlerName/{0}");
+         * app.UseStatusCodePagesWithReExecute("/errors/{0}");
+        */
+        //custom middleware for error with exceptions ..................... Excption middleware
+
         private readonly ApplicationDbContext context;
 
         public BugsController(ApplicationDbContext context)
@@ -39,7 +49,7 @@ namespace APP.Api.Controllers
         }
 
 
-        [HttpGet("bad-request/id")]
+        [HttpGet("bad-request/{id}")]
         public ActionResult GetNotFoundRequest(int id)
         {
             return Ok();

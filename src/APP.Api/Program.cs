@@ -1,5 +1,8 @@
+using APP.Api.Errors;
+using APP.Api.Extensions;
 using APP.Api.Middleware;
 using APP.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 
@@ -8,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//-----------------------------------------------------API services configuration
+builder.Services.AddApiRegestration();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,12 +22,7 @@ builder.Services.AddSwaggerGen();
 //-----------------------------------------------------DataBase configuration
 builder.Services.InfrastructureConfiguration(builder.Configuration);
 
-//-----------------------------------------------------auto mapper configuration
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-//-----------------------------------------------------IFileProvider configuration
-builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(
-    Path.Combine(Directory.GetCurrentDirectory(),"wwwroot")));
 
 
 var app = builder.Build();

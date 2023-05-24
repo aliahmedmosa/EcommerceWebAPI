@@ -14,6 +14,10 @@ namespace APP.Infrastructure.Repositories
 {
     public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
+
+        // Configure IFileProvider in ApiRegestration.cs in Extensions and configue it in program.cs
+
+
         private readonly ApplicationDbContext context;
         private readonly IFileProvider fileProvider;
         private readonly IMapper mapper;
