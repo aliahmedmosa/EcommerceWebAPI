@@ -38,7 +38,6 @@ namespace APP.Api.Controllers
         }
 
 
-
         [HttpGet("bad-request/id")]
         public ActionResult GetNotFoundRequest(int id)
         {
