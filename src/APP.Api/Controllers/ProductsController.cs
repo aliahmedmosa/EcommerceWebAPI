@@ -1,4 +1,5 @@
-﻿using APP.Core.Dtos;
+﻿using APP.Api.Errors;
+using APP.Core.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
 using AutoMapper;
@@ -35,7 +36,7 @@ namespace APP.Api.Controllers
                     //End implementaion
 
                 }
-                return BadRequest("Not Found");
+                return NotFound(new BaseCommonResponse(404));
             }
             catch (Exception ex)
             {
@@ -60,7 +61,7 @@ namespace APP.Api.Controllers
                     return Ok(response);
 
                 }
-                return BadRequest($"Not Found This Id[{id}]");
+                return NotFound(new BaseCommonResponse(404));
 
                 //End implementaion
 

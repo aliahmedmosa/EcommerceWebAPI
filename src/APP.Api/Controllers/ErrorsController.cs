@@ -6,7 +6,7 @@ namespace APP.Api.Controllers
 {
     [Route("errors/{statusCode}")]
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi =true)]
+    [ApiExplorerSettings(IgnoreApi =true)] //To ignore this controller from appeare in Swagger
     public class ErrorsController : ControllerBase
     {
         //-------------------------------------------------------  Not forget errors middleware
