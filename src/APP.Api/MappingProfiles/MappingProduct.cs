@@ -13,8 +13,8 @@ namespace APP.Api.MappingProfiles
             //CreateMap<distenation,source>().ReverseMap();
             //Does not matter where is the source or the distenation ReverseMap() will solve this issue .....
             CreateMap<Product, ProductDto>()
-                .ForMember(d=>d.CategoryName,o=>o.MapFrom(s=>s.Category.Name))      //to get category with products 
-                .ForMember(d=>d.ProductPicture,o=>o.MapFrom<ProductUrlResolver>())   //to get Product Picture
+                .ForMember(d=>d.CategoryName,o=>o.MapFrom(s=>s.Category.Name))       //To include category name with products 
+                .ForMember(d=>d.ProductPicture,o=>o.MapFrom<ProductUrlResolver>())   //To include Full product Picture source to appeare 
                 .ReverseMap();
             CreateMap<CreateProductDto, Product>().ReverseMap();
             CreateMap<UpdateProductDto, Product>().ReverseMap();
