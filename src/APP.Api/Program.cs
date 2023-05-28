@@ -47,6 +47,10 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+//............................................................Enable Cors Servive
+app.UseCors("CorsPolicy");
+
 app.UseAuthorization();
 
 app.MapControllers();

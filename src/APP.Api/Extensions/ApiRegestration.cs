@@ -7,6 +7,7 @@ namespace APP.Api.Extensions
 {
     public static class ApiRegestration
     {
+        //------------This class to Register the services Except making it in the program.cs 
         public static IServiceCollection AddApiRegestration(this IServiceCollection services)
         {
             //-----------------------------------------------------auto mapper configuration
@@ -31,6 +32,17 @@ namespace APP.Api.Extensions
                     return new BadRequestObjectResult(errorResponse);
                 };
 
+            });
+
+            //...........................................................................Enable CORS Configurations
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", pol =>
+                {
+                    pol.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:4200");
+                });
             });
             return services;
         }

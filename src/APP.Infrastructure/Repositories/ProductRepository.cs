@@ -1,12 +1,15 @@
 ﻿using APP.Core.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
+using APP.Core.Sharing;
 using APP.Infrastructure.Data;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +34,44 @@ namespace APP.Infrastructure.Repositories
            
         }
 
+        // overload Get async implement sorting function
+        public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
+        {
+            var query = await context.Products
+                .Include(x => x.Category)
+                .AsNoTracking()
+                .ToListAsync();
+
+            //Search 
+            if (!string.IsNullOrEmpty(productParams.Search))
+            {
+                query = query.Where(x=>x.Name.ToLower().Contains(productParams.Search)).ToList();
+            }
+            //get by category id
+            if (productParams.CategoryId.HasValue)
+            {
+                query = query.Where(x => x.CategoryId == productParams.CategoryId).ToList();
+            }
+
+            //get sorted
+            if (!string.IsNullOrEmpty(productParams.Sort))
+            {
+                query = productParams.Sort switch
+                {
+                    "PriceAsc" => query.OrderBy(x => x.Price).ToList(),
+                    "PriceDesc" => query.OrderByDescending(x => x.Price).ToList(),
+                    _ => query.OrderBy(x => x.Name).ToList(),
+                };    
+            }
+
+            //paging 
+
+            query = query.Skip((productParams.PageSize) * (productParams.PageNumber - 1)).Take(productParams.PageSize).ToList();
+
+
+            var result = mapper.Map<List<ProductDto>>(query);
+            return result;
+        }
 
         // overload add async to upload image 
         public async Task<bool> AddAsync(CreateProductDto dto)
@@ -70,7 +111,7 @@ namespace APP.Infrastructure.Repositories
         }
 
 
-
+        // overload update async to upload image
         public async Task<bool> UpdateAsync(UpdateProductDto dto)
         {
             var currentProduct = await context.Products.FindAsync(dto.Id);

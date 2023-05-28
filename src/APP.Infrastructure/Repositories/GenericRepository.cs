@@ -26,6 +26,9 @@ namespace APP.Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
+        public async Task<int> CountAsync()
+        =>await context.Set<T>().CountAsync();
+
         public async Task DeleteAsync(int id)
         {
             var foundEntity =await context.Set<T>().FindAsync(id);

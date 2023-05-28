@@ -1,0 +1,19 @@
+﻿namespace APP.Api.Helper
+{
+    public class Pagination<T> where T:class
+    {
+        //----------------------------------------------------------Generic Pagination DTO
+        public Pagination(int pageNumber, int pageSize, int count, IReadOnlyList<T>? data)
+        {
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+            Count = count;
+            Data = data;
+        }
+
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+        public int Count { get; set; }
+        public IReadOnlyList<T>? Data { get; set; }
+    }
+}

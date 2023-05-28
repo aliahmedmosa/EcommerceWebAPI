@@ -1,7 +1,9 @@
 ﻿using APP.Api.Errors;
+using APP.Api.Helper;
 using APP.Core.Dtos;
 using APP.Core.Entities;
 using APP.Core.Interfaces;
+using APP.Core.Sharing;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +23,21 @@ namespace APP.Api.Controllers
             this.mapper = mapper;
         }
 
+
+
         [HttpGet("Get-All-Products")]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get([FromQuery]ProductParams productParams)
         {
             try
             {
-                var allProducts = await uOW.ProductRepository.GetAllAsync(x=>x.Category);
+                var allProducts = await uOW.ProductRepository.GetAllAsync(productParams);
+                var totalItems = uOW.ProductRepository.CountAsync().Result;
                 if (allProducts is not null)
                 {
                     //Start implementaion
-                    var response = mapper.Map<List<ProductDto>>(allProducts);
-                    return Ok(response);
-
+                    var result = mapper.Map<IReadOnlyList<ProductDto>>(allProducts);
+                    return Ok(new Pagination<ProductDto>(productParams.PageNumber, productParams.PageSize, totalItems, result)); //Generic Pagination class to format the response....
+                      
                     //End implementaion
 
                 }
