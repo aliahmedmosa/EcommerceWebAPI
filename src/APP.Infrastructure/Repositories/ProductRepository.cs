@@ -39,7 +39,7 @@ namespace APP.Infrastructure.Repositories
         public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
         {
             var query = await context.Products
-                .Include(x => x.Category) //This line to include Category ..... And we use MappingProduct class to include . 
+                .Include(x => x.Category) //This line to include Category ..... And we use MappingProduct class to include category name
                 .AsNoTracking()
                 .ToListAsync();
 

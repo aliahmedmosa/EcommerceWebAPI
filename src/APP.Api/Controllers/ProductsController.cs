@@ -79,7 +79,7 @@ namespace APP.Api.Controllers
         }
 
         [HttpPost("Add-New-Product")]
-        public async Task<ActionResult> post([FromForm]CreateProductDto productDto)
+        public async Task<ActionResult> Post([FromForm]CreateProductDto productDto)
         {
             try
             {
