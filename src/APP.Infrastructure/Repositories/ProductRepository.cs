@@ -34,11 +34,12 @@ namespace APP.Infrastructure.Repositories
            
         }
 
-        // overload Get async implement sorting function
+        // Overload Get async implement sorting function
+        // Get items including category with search ,get by category ,sorted and paging 
         public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
         {
             var query = await context.Products
-                .Include(x => x.Category)
+                .Include(x => x.Category) //This line to include Category ..... And we use MappingProduct class to include . 
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -101,6 +102,7 @@ namespace APP.Infrastructure.Repositories
                 //End Implementation 
 
             }
+
             //Create new product with uploaded Image ----------
             var response = mapper.Map<Product>(dto);
             response.ProductPicture = src;
