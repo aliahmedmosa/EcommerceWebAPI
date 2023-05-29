@@ -34,8 +34,8 @@ namespace APP.Infrastructure.Repositories
            
         }
 
-        // Overload Get async implement sorting function
-        // Get items including category with search ,get by category ,sorted and paging 
+        
+        // Overload Get async implement sorting, search ,get by category and paging functions
         public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
         {
             var query = await context.Products
