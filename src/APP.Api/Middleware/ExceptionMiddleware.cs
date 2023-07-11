@@ -26,13 +26,13 @@ namespace APP.Api.Middleware
             }
             catch (Exception ex)
             {
-                logger.LogError(ex,$"This error come from exception middleware ...... {ex.Message} !");
+                logger.LogError(ex, $"This error come from exception middleware ...... {ex.Message} !");
                 context.Response.StatusCode=(int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 
                 //send diffrent message in development environment than production environment ......
-                var response =hostEnvironment.IsDevelopment() 
-                    ?new ApiException((int)HttpStatusCode.InternalServerError,ex.Message,ex.StackTrace.ToString())
+                var response =hostEnvironment.IsDevelopment()
+                    ? new ApiException((int)HttpStatusCode.InternalServerError, ex.Message, ex.StackTrace.ToString())
                     :new ApiException((int)HttpStatusCode.InternalServerError);
 
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
