@@ -1,6 +1,11 @@
-﻿using APP.Core.Interfaces;
+﻿using APP.Core.Entities;
+using APP.Core.Interfaces;
 using APP.Infrastructure.Data;
+using APP.Infrastructure.Data.Config;
 using APP.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +36,28 @@ namespace APP.Infrastructure
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
+
+            //..........................configure identity
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            services.AddMemoryCache();
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+
+
             return services;
+        }
+
+        public static async void InfrastructureconfigMiddleware(this IApplicationBuilder app)
+        {
+            using(var scope = app.ApplicationServices.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                await IdentitySeed.SeedUserAsync(userManager);
+            }
         }
     }
 }

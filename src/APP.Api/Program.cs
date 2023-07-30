@@ -52,7 +52,8 @@ app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
-
+InfrastructureRegistration.InfrastructureconfigMiddleware(app);
 app.Run();
