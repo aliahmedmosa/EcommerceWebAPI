@@ -31,13 +31,13 @@ namespace APP.Infrastructure.Repositories
             this.context = context;
             this.fileProvider = fileProvider;
             this.mapper = mapper;
-           
         }
 
         
         // Overload Get async implement sorting, search ,get by category and paging functions
-        public async Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams)
+        public async Task<ReturnProductDto> GetAllAsync(ProductParams productParams)
         {
+            var result_ = new ReturnProductDto();
             var query = await context.Products
                 .Include(x => x.Category) //This line to include Category ..... And we use MappingProduct class to include category name
                 .AsNoTracking()
@@ -59,19 +59,17 @@ namespace APP.Infrastructure.Repositories
             {
                 query = productParams.Sort switch
                 {
-                    "PriceAsc" => query.OrderBy(x => x.Price).ToList(),
+                    "PriceAsc"  => query.OrderBy(x => x.Price).ToList(),
                     "PriceDesc" => query.OrderByDescending(x => x.Price).ToList(),
-                    _ => query.OrderBy(x => x.Name).ToList(),
+                    _           => query.OrderBy(x => x.Name).ToList(),
                 };    
             }
-
+            result_.TotalItems=query.Count;
             //paging 
-
             query = query.Skip((productParams.PageSize) * (productParams.PageNumber - 1)).Take(productParams.PageSize).ToList();
 
-
-            var result = mapper.Map<List<ProductDto>>(query);
-            return result;
+            result_.ProductDtos = mapper.Map<List<ProductDto>>(query);
+            return result_;
         }
 
         // overload add async to upload image 

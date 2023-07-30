@@ -12,7 +12,7 @@ namespace APP.Core.Interfaces
     public interface IProductRepository : IGenericRepository<Product>
     {
         //Here you will write special implementation for Product for future
-        Task<IEnumerable<ProductDto>> GetAllAsync(ProductParams productParams);
+        Task<ReturnProductDto> GetAllAsync(ProductParams productParams);
         Task<bool> AddAsync(CreateProductDto dto);
         Task<bool> UpdateAsync(UpdateProductDto dto);
     }

@@ -18,7 +18,7 @@ namespace APP.Infrastructure.Data
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products{ get; set; }
 
-        //To search about configuration anywhere from any class that inherit from IEntityTypeConfiguration<Product>
+        //To search about configuration anywhere from any class that inherit from IEntityTypeConfiguration<>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

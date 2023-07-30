@@ -31,12 +31,11 @@ namespace APP.Api.Controllers
             try
             {
                 var allProducts = await uOW.ProductRepository.GetAllAsync(productParams);
-                var totalItems = uOW.ProductRepository.CountAsync().Result;
                 if (allProducts is not null)
                 {
                     //Start implementaion
-                    var result = mapper.Map<IReadOnlyList<ProductDto>>(allProducts);
-                    return Ok(new Pagination<ProductDto>(productParams.PageNumber, productParams.PageSize, totalItems, result)); //Generic Pagination class to format the response....
+                    var result = mapper.Map<IReadOnlyList<ProductDto>>(allProducts.ProductDtos);
+                    return Ok(new Pagination<ProductDto>(productParams.PageNumber, productParams.PageSize, allProducts.TotalItems, result)); //Generic Pagination class to format the response....
                       
                     //End implementaion
 
