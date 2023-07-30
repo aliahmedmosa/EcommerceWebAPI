@@ -1,4 +1,5 @@
 ﻿using APP.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace APP.Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -17,6 +18,7 @@ namespace APP.Infrastructure.Data
 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products{ get; set; }
+        public virtual DbSet<Address> Addresses{ get; set; }
 
         
         //To search about configuration anywhere from any class that inherit from IEntityTypeConfiguration<>
